@@ -328,6 +328,9 @@
       border-radius: 0;
     }
   }
+  [aria-controls="primary-nav"] {
+    display: none;
+  }
   .primary-navigation {
     ul {
       list-style: none;
@@ -342,13 +345,14 @@
     }
     
     @media (width < 760px) {
+      display: none;
       position: absolute;
       z-index: 10;
       top: 0;
       right: 0;
       font-size: var(--font-size-lg);
       font-weight: 700;
-      font-fsmily: var(--ff-heading);
+      font-family: var(--ff-heading);
       background-color: var(--background-accent-main);
       padding: 2rem;
       border-radius: 0 0 0 var(--border-radius-3);
@@ -364,7 +368,14 @@
         padding-block-start: 1.5rem;
       }
     }
-
+  }
+  @media (width < 760px) {
+    [aria-controls="primary-nav"] {
+      display: block;
+    }
+    [aria-expanded="true"] + .primary-navigation {
+      display: block;
+    }
   }
   .site-footer {
     text-align: center;
