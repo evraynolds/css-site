@@ -1,6 +1,14 @@
 /*Sets the priority of layers*/
 @layer reset, base, layout, components, utilities;
 
+@view-transition {
+  navigation: auto;
+}
+
+/* ::view-transition-group(root) {
+  animation-duration: 2s;
+} */
+
 @layer reset {
 
   *,
@@ -85,9 +93,16 @@
     --clr-gray-100: hsl(0, 2%, 79%);
     --clr-brand-400: hsl(25, 88%, 75%);
     --clr-brand-500: hsl(25, 88%, 66%);
+    --clr-green-300: hsl(143, 19%, 69%);
     --clr-green-400: hsl(143, 19%, 49%);
     --clr-green-500: hsl(143, 38%, 37%);
     --clr-green-600: hsl(145, 29%, 19%);
+    
+    --clr-brown-100: hsl(10, 5%, 90%);
+    --clr-brown-200: hsl(9, 7%, 85%);
+    --clr-brown-300: hsl(9, 8%, 75%);
+    --clr-brown-400: hsl(0, 6%, 65%);
+    
     --clr-brown-500: hsl(10, 5%, 25%);
     --clr-brown-600: hsl(9, 7%, 21%);
     --clr-brown-700: hsl(9, 8%, 16%);
@@ -150,6 +165,19 @@
     --border-radius-2: 0.5rem;
     --border-radius-3: 0.75rem;
 
+    /*ctrl + SHIFT + P : emulate light (dev tools)*/
+    @media (prefers-color-scheme: light) {
+      --text-main: var(--clr-brown-700);
+      --text-regular: var(--clr-brown-900);
+      --text-high-contrast: var(--clr-white);
+
+      --background-accent-main: var(--clr-green-400);
+      --background-extra-light: var(--clr-brown-100);
+      --background-light: var(--clr-brown-200);
+      --background-main: var(--clr-brown-300);
+      --background-dark: var(--clr-brown-400);
+      --background-extra-dark: var(--clr-brown-500);
+    }
     @media (width > 760px) {
       --fs-300: 0.875rem;
       --fs-400: 1rem;
@@ -298,9 +326,22 @@
     text-align: center;
     font-size: var(--font-size-md);
     color: var(--text-high-contrast);
+    /*Used to pick between colors or enforce theme*/
+    /* color: light-dark(var(--clr-brown-100), var(--clr-brown-900) ); */
+    /* color-scheme: dark; */
+    
     background-image: url(/assets/hero.webp);
     background-size: cover;
     background-position: center;
+
+    /*fades-out*/
+    animation: fade-out forwards;
+    /*
+    scroll() looks form top to bottom of page
+    view() looks at 'that'(hero) elelemnt inside the viewport
+    */
+    animation-timeline: view();
+    animation-range-start: exit;
   }
 
   .hero__title {
@@ -466,6 +507,10 @@
 
   .site-header {
     padding-block: 1rem;
+
+    overflow-x: clip;
+    position: relative;
+    /* overflow-clip-margin: 1rem; */
   }
 
   .site-header__inner {
@@ -502,6 +547,11 @@
     
     @media (width < 760px) {
       display: none;
+      opacity: 0;
+      translate: 100% 0;
+      transition: opacity 0.25s, display 0.25s, translate 0.25s;
+      transition-behavior: allow-discrete; /*needed to animate display property*/
+
       position: absolute;
       z-index: 10;
       top: 0;
@@ -518,6 +568,21 @@
         flex-direction: column;
       }
 
+      li {
+        --delay: 0.2s;
+        opacity: 0;
+        translate: 50%;
+        transition: translate var(--delay) var(--delay), opacity var(--delay) var(--delay);
+      }
+
+      li:nth-child(2) {
+        --delay: 0.25s;
+      }
+
+      li:nth-child(3) {
+        --delay: 0.3s;
+      }
+
       li + li {
         border-top: 2px solid var(--background-accent-light);
         margin-block-start: 1.5rem;
@@ -531,6 +596,22 @@
     }
     [aria-expanded="true"] + .primary-navigation {
       display: block;
+      opacity: 1;
+      translate: 0 0;
+      /*used to fade-in nav hamburger menu*/
+      @starting-style { 
+        opacity: 0;
+        translate: 0 -100%;
+      }
+
+      li {
+        translate: 0 0;
+        opacity: 1;
+        @starting-style {
+          opacity: 0;
+          translate: 50% 0;
+        }
+      }
     }
   }
   .site-footer {
@@ -559,6 +640,15 @@
   [hidden] {
     display: none;
   }
+
+  /*used with resize observer to prevent nav 
+  hamburger menu from running when screen is resized*/
+  .resizing * {
+    transition: none;
+    animation-play-state: paused;
+  }
+
+
   .visually-hidden {
     clip: rect(0 0 0 0);
     clip-path: inset(50%);
@@ -619,5 +709,23 @@
   }
   .section-title {
     font-size: var(--font-size-heading-regular)
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }

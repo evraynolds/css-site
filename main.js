@@ -11,3 +11,13 @@ navToggle.addEventListener("click", () => {
   }
   console.log("clicked Nav!", navOpened);
 });
+
+const resizeObserver = new ResizeObserver((entries) => {
+  document.body.classList.add("resizing");
+
+  requestAnimationFrame(() => {
+    document.body.classList.remove("resizing");
+  });
+});
+
+resizeObserver.observe(document.body);
