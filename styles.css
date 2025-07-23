@@ -1,5 +1,5 @@
 /*Sets the priority of layers*/
-@layer reset, base, layout, components;
+@layer reset, base, layout, components, utilities;
 
 @layer reset {
 
@@ -160,45 +160,45 @@
       --fs-900: 5rem;
       --fs-1000: 7.5rem;
     }
-
-    html {
-      font-family: var(--ff-body);
-      line-height: 1.6;
-      scroll-padding: 3rem;
-    }
-
-    @media (prefers-reduced-motion: no-preference) {
-      html {
-        scroll-behavior: smooth;
-
-      }
-    }
-
-    body { 
-      font-family: var(--ff-body);
-      font-size: var(--font-size-regular);
-      color: var(--text-main);
-      background-color: var(--background-main);
-    }
-    h1,
-    h2,
-    h3,
-    h4 {
-      font-family: var(--ff-heading);
-      font-weight: 700;
-      color: var(--text-high-contrast);
-    }
-
-    a {
-      color: var(--text-high-contrast);
-    }
-
-    a:hover,
-    a:focus-visible {
-      color: var(--text-brand-light);
-    }
-
   }
+
+  html {
+    font-family: var(--ff-body);
+    line-height: 1.6;
+    scroll-padding: 3rem;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body { 
+    font-family: var(--ff-body);
+    font-size: var(--font-size-regular);
+    color: var(--text-main);
+    background-color: var(--background-main);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--ff-heading);
+    font-weight: 700;
+    color: var(--text-high-contrast);
+  }
+
+  a {
+    color: var(--text-high-contrast);
+  }
+
+  a:hover,
+  a:focus-visible {
+    color: var(--text-brand-light);
+  }
+
   img {
     border-radius: var(--border-radius-3);
   }
@@ -219,11 +219,11 @@
     gap: var(--grid-flow-gap, 1rem)
   }
 
-  .grid-auto-fit {
+  .grid-auto-fill {
     --auto-fit-min-col-size: 250px;
     display: grid;
     gap: 1rem;
-    grid-template-columns: repeat(auto-fit, minmax(min(var(--auto-fit-min-col-size), 100%), 1fr))
+    grid-template-columns: repeat(auto-fill, minmax(min(var(--auto-fit-min-col-size), 100%), 1fr))
   }
 
   .equal-columns {
@@ -556,6 +556,9 @@
 }
 
 @layer utilities {
+  [hidden] {
+    display: none;
+  }
   .visually-hidden {
     clip: rect(0 0 0 0);
     clip-path: inset(50%);
